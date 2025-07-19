@@ -1,4 +1,4 @@
-package githubrepositoryfetcher.model;
+package githubrepositoryfetcher.exception;
 
 public class RepositoryNotFoundException extends  RuntimeException{
     public RepositoryNotFoundException(String name){

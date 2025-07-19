@@ -1,11 +1,9 @@
 package githubrepositoryfetcher.exception;
 
 import githubrepositoryfetcher.model.InternalServerException;
-import githubrepositoryfetcher.model.RepositoryNotFoundException;
-import githubrepositoryfetcher.model.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import githubrepositoryfetcher.model.ErrorResponse;
+import githubrepositoryfetcher.response.ErrorResponse;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -25,7 +23,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InternalServerException.class)
     ResponseEntity<ErrorResponse> handleInternalServerError(InternalServerException ex){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErrorResponse(404, ex.getMessage()));
     }
 }

@@ -1,4 +1,4 @@
-package githubrepositoryfetcher.model;
+package githubrepositoryfetcher.exception;
 
 import lombok.Getter;
 

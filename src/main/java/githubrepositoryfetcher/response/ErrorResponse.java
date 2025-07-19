@@ -1,4 +1,4 @@
-package githubrepositoryfetcher.model;
+package githubrepositoryfetcher.response;
 
 public record ErrorResponse(
         int status,
