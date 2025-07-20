@@ -5,6 +5,6 @@ import lombok.Builder;
 @Builder
 public record BranchDto(
         String name,
-        String lastCommitSha
+        String lastCommit
 ) {
 }
