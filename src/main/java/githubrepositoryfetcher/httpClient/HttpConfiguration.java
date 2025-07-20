@@ -10,7 +10,7 @@ public class HttpConfiguration {
     public RestTemplate restTemplate(){
         return new RestTemplate();
     }
-    public static final String GIT_HAB_BASE_URI = "https://developer.github.com/v3";
-    public static final String USER_NAME = GIT_HAB_BASE_URI +"/users/%s/repos";
-    private static final String REPO_NAME = GIT_HAB_BASE_URI + "/repos/%s/%s/branches";
+    public static final String GIT_HUB_BASE_URI = "https://api.github.com";
+    public static final String GIT_HAB_BASE_URI_AND_USER_NAME = GIT_HUB_BASE_URI +"/users/%s/repos";
+    private static final String USER_REPO_NAME = GIT_HUB_BASE_URI + "/repos/%s/%s/branches";
 }
