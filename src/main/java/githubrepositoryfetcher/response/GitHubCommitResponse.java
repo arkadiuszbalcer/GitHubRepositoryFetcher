@@ -4,8 +4,5 @@ import githubrepositoryfetcher.model.Commit;
 import lombok.Builder;
 
 @Builder
-public record GitHubBranchResponse(
-        String name,
-        Commit commit
-) {
+public record GitHubCommitResponse(Commit commit) {
 }

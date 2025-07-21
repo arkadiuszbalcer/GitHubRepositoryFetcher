@@ -1,4 +1,4 @@
-package githubrepositoryfetcher.model;
+package githubrepositoryfetcher.exception;
 
 public class InternalServerException extends RuntimeException{
     public InternalServerException(){

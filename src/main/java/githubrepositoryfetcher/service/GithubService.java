@@ -5,7 +5,7 @@ import githubrepositoryfetcher.exception.RepositoryNotFoundException;
 import githubrepositoryfetcher.exception.UserNotFoundException;
 import githubrepositoryfetcher.httpClient.HttpConfiguration;
 import githubrepositoryfetcher.model.BranchDto;
-import githubrepositoryfetcher.model.InternalServerException;
+import githubrepositoryfetcher.exception.InternalServerException;
 import githubrepositoryfetcher.model.RepositoryDto;
 import githubrepositoryfetcher.response.GitHubBranchResponse;
 import githubrepositoryfetcher.response.GitHubRepositoryResponse;
@@ -22,9 +22,9 @@ import org.slf4j.LoggerFactory;
 @RequiredArgsConstructor
 public class GithubService {
     private final RestTemplate restTemplate;
-    private static final  Logger logger = LoggerFactory.getLogger(GithubService.class);
+    private static final Logger logger = LoggerFactory.getLogger(GithubService.class);
 
-    public List<RepositoryDto> fetchRepositories(String userName, String repositoryName) {
+    public List<RepositoryDto> fetchAllRepositories(String userName) {
         String url = String.format(HttpConfiguration.GIT_HUB_BASE_URI_AND_USER_NAME, userName);
         try {
             GitHubRepositoryResponse[] response = restTemplate.getForObject(url, GitHubRepositoryResponse[].class);
@@ -32,39 +32,30 @@ public class GithubService {
             if (response == null || response.length == 0) {
                 return List.of();
             }
-            List<RepositoryDto> filteredRepos = Arrays.stream(response)
+
+            return Arrays.stream(response)
                     .filter(repository -> !repository.fork())
-                    .filter(repository -> repository.name().equalsIgnoreCase(repositoryName))
-                    .map(repository -> new RepositoryDto(
-                            repository.name(),
-                            repository.owner().login(),
-                            repository.fork()
-                    ))
+                    .map(repository -> {
+                        List<BranchDto> branches = fetchBranches(userName, repository.name());
+                        return RepositoryDto.builder()
+                                .name(repository.name())
+                                .ownerLogin(repository.owner().login())
+                                .branches(branches)
+                                .build();
+                    })
                     .toList();
-            if (filteredRepos.isEmpty()) {
-                throw new RepositoryNotFoundException(repositoryName);
-            }
-            return filteredRepos;
+
+
         } catch (HttpClientErrorException.NotFound e) {
             throw new UserNotFoundException(userName);
-        }catch (RepositoryNotFoundException | UserNotFoundException ex){
-            throw ex;
         } catch (Exception e) {
-            logger.error("Unexpected error in fetch repositories", e);
+            logger.error("Unexpected error in fetch all repositories", e);
             throw new InternalServerException();
         }
     }
 
-    public List<BranchDto> fetchbranchesForReposiotry(String userName, String reposiotryName) {
-        List<RepositoryDto> filteredRepos = fetchRepositories(userName, reposiotryName);
-        if (filteredRepos.isEmpty()) {
-            throw new RepositoryNotFoundException(reposiotryName);
-        }
-        RepositoryDto repo = filteredRepos.get(0);
-        return fetchbranches(repo.ownerLogin(), repo.name());
-    }
 
-    public List<BranchDto> fetchbranches(String userName, String repositoryName) {
+    public List<BranchDto> fetchBranches(String userName, String repositoryName) {
         try {
             String url = String.format(HttpConfiguration.USER_REPO_NAME, userName, repositoryName);
             GitHubBranchResponse[] response = restTemplate.getForObject(url, GitHubBranchResponse[].class);
@@ -74,7 +65,7 @@ public class GithubService {
             return Arrays.stream(response)
                     .map(branchDto -> BranchDto.builder()
                             .name(branchDto.name())
-                            .lastCommit(branchDto.Commit().sha())
+                            .lastCommit(branchDto.commit().sha())
                             .build())
                     .toList();
 

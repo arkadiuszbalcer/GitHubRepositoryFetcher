@@ -1,6 +1,5 @@
 package githubrepositoryfetcher.exception;
 
-import githubrepositoryfetcher.model.InternalServerException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import githubrepositoryfetcher.response.ErrorResponse;

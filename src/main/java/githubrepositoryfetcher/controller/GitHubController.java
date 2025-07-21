@@ -19,31 +19,9 @@ public class GitHubController {
 
 private final GithubService githubService;
 
-@GetMapping("/repos/{userName}/{repositoryName}")
-
-    public List<RepositoryDto> getUsersRepos(
-        @PathVariable String userName,
-        @PathVariable String repositoryName){
-
-    List<RepositoryDto> repository = githubService.fetchRepositories(userName, repositoryName);
-    return repository;
-}
-
-@GetMapping("/repos/{userName}/{repositoryName}/{name}")
-    public List<BranchDto> getUsersReposBranch(
-            @PathVariable String userName,
-            @PathVariable String repositoryName) {
-    List<BranchDto> branches = githubService.fetchbranchesForReposiotry(userName, repositoryName);
-    return branches;
-}
-
-    @GetMapping("/repos/{userName}/{repositoryName}/{name}/{branch}")
-    public List<BranchDto> getCommitFromUserBranch(
-            @PathVariable String userName,
-            @PathVariable String repositoryName,
-            @PathVariable String branch
-    ) {
-        List<BranchDto> commits = githubService.fetchbranchesForReposiotry(userName, repositoryName, branch);
-        return commits;
+    @GetMapping("/repos/{userName}")
+    public List<RepositoryDto> getAllUserRepositories(@PathVariable String userName) {
+        return githubService.fetchAllRepositories(userName);
     }
+
 }
