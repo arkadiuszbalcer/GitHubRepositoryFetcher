@@ -16,7 +16,7 @@ Prosta aplikacja REST w Spring Boot, która pobiera wszystkie nieforkowane repoz
 ## Jak uruchomić
 
 1. Sklonuj repozytorium:
-   git clone https://github.com/TwojLogin/GitHubRepositoryFetcher.git
+   git clone https://github.com/arkadiuszbalcer/GitHubRepositoryFetcher.git
    cd GitHubRepositoryFetcher
 
 2. Uruchom aplikację:
