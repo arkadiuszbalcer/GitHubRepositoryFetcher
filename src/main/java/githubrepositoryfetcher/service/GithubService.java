@@ -1,6 +1,5 @@
 package githubrepositoryfetcher.service;
 
-
 import githubrepositoryfetcher.exception.RepositoryNotFoundException;
 import githubrepositoryfetcher.exception.UserNotFoundException;
 import githubrepositoryfetcher.httpClient.HttpConfiguration;

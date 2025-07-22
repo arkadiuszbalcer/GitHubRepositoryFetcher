@@ -1,0 +1,49 @@
+# GitHub Repository Fetcher
+
+Prosta aplikacja REST w Spring Boot, która pobiera wszystkie nieforkowane repozytoria użytkownika GitHub wraz z listą branchy i SHA ostatnich commitów.
+
+---
+
+## Technologie
+
+- Java 17
+- Spring Boot 3.5.3
+- REST (GitHub API v3)
+- Maven
+
+---
+
+## Jak uruchomić
+
+1. Sklonuj repozytorium:
+   git clone https://github.com/TwojLogin/GitHubRepositoryFetcher.git
+   cd GitHubRepositoryFetcher
+
+2. Uruchom aplikację:
+   ./mvnw spring-boot:run
+
+3. Wyślij żądanie GET do endpointu:
+   http://localhost:8080/github/repos/{username}
+   gdzie
+   `{username}` to nazwa użytkownika GitHub, np.:   http://localhost:8080/github/repos/arkadiuszbalcer
+
+---
+
+## Response
+
+Zwracane dane to lista repozytoriów (bez forków), w formacie JSON zawierająca:
+
+- nazwa repozytorium
+- login właściciela
+- lista branchy (nazwa + SHA ostatniego commita)
+
+---
+
+## Obsługa błędów
+
+Jeśli użytkownik GitHub nie istnieje, aplikacja zwróci JSON:
+
+{
+  "status": 404,
+  "message": "User not found"
+}
